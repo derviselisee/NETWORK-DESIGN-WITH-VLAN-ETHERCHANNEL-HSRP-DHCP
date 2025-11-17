@@ -1,59 +1,99 @@
-# NETWORK-DESIGN-WITH-VLAN-ETHERCHANNEL-HSRP-DHCP
-Enterprise Network with VLAN Segmentation, Redundant Gateways (HSRP), DHCP Server, Relay, and EtherChannel .
+Enterprise Network Design with VLANs, EtherChannel, HSRP, and Centralized DHCP
 
-In this project, I designed and configured a small enterprise network infrastructure using Cisco routers and switches in Packet Tracer. The goal was to build a scalable and resilient LAN that includes VLAN segmentation, redundant default gateways with HSRP, centralized DHCP services, and a high availability switching backbone using EtherChannel. 
+This project involves designing and deploying a resilient enterprise LAN using Cisco routers and switches.
+The goal was to build a segmented, scalable, and highly available network using VLANs, EtherChannel, redundant gateway protocols (HSRP), and centralized DHCP services with relay support.
+All configurations were implemented in Cisco Packet Tracer.
 
-WHAT DID I DO IN THIS PROJECT? 
+Implementation Summary
+1. VLAN Segmentation and Port Assignment
 
-Step 1: VLAN Creation and Port Assignment 
+I created two VLANs to separate user groups and reduce broadcast traffic.
 
- I began by creating two VLANs: 
+VLAN 10 assigned to devices (DOM, ASHLEY, PAUL, PETER PCs)
 
--VLAN 10 for one group of devices (DOM , ASHLEY ,PAUL ,PETER PCs) 
+VLAN 20 assigned to devices (FATOU, SARAH, JEAN, ALAN PCs)
 
--VLAN 20 for another group (FATOU , SARAH , JEAN , ALAN PCs) 
+All switch ports were mapped to the appropriate VLAN. 
+This segmentation reflects how real businesses separate departments for security and traffic optimization.
 
-Then I assigned the appropriate switch ports to each VLAN, ensuring proper segmentation of broadcast domains. This approach mimics how businesses isolate departments for security and traffic control. 
+2. EtherChannel Deployment Between Switches
 
-Step 2: EtherChannel Between Switches To improve both bandwidth and fault tolerance 
+-To increase bandwidth and resiliency between the switches, I configured EtherChannel.
 
- I configured the EtherChannel between the two access switches. This combined multiple physical links into one logical link, increasing performance and preventing loops without over-relying on Spanning Tree. I bundled (port f0/21 to f0/24 on Switch A and Switch B to form on single link ) 
+-Bundled FastEthernet 0/21–0/24 on both switches into a single logical link
 
-Step 3: Trunk Links to Routers 
+-Improved throughput while providing redundancy against single link failure
 
-Each switch was connected to both routers using trunk links, enabling them to carry traffic from multiple VLANs. This was essential for the router-on-a-stick inter-VLAN routing design I applied later. 
+-Reduced dependence on spanning tree by aggregating links
 
-Step 4: Inter-VLAN Routing (Router-on-a-Stick)  
+This created a stable and high-performance switching backbone.
 
-I configured sub-interfaces on both routers for each VLAN: 
+3. Trunk Links to Routers
 
-One sub-interface per VLAN (e.g., Gig0/0.10 for VLAN 10, Gig0/0.20 for VLAN 20) 
+I configured trunk links between the access switches and both routers.
 
-Each sub-interface was assigned a unique real IP address in its VLAN subnet 
+Allows multiple VLANs to travel across a single interface
 
-This allowed routers to route traffic between VLANs, enabling communication between different segments while preserving VLAN separation. 
+Supports router-on-a-stick inter-VLAN routing design
 
-Step 5: HSRP (Hot Standby Router Protocol) Configuration 
+This step ensured that VLAN-tagged traffic reached the routers correctly.
 
-To ensure default gateway redundancy, I implemented HSRP on both routers: I assigned a shared virtual IP address per VLAN (e.g., 192.168.10.1, 192.168.20.1)  
+4. Inter-VLAN Routing (Router-on-a-Stick)
 
--Router 1 was configured as the active router  
+-I enabled inter-VLAN routing by creating sub-interfaces on both routers.
 
--Router 2 was configured as the standby 
+-One sub-interface per VLAN (for example, Gig0/0.10 for VLAN 10, Gig0/0.20 for VLAN 20)
 
-HSRP ensures that even if the primary router fails, the standby router immediately takes over without interrupting client traffic. This adds high availability to the network. 
+-Each sub-interface was assigned an IP address from its corresponding subnet
 
-Step 6: Centralized DHCP Server on Router 1  
+-This allowed VLANs to communicate securely while maintaining logical separation.
 
-Router 1 was configured as a DHCP server to dynamically assign IP addresses to end devices in both VLANs.  
+5. Gateway Redundancy Using HSRP
 
-For each pool: I defined the subnet Assigned the HSRP virtual IP as the default gateway Set the DNS server and lease time 
+To provide high availability for default gateways, I configured HSRP on both routers.
 
-This provided automatic and centralized IP management, simulating what an enterprise DHCP server does in production. 
+-Created virtual gateways for VLAN 10 and VLAN 20
 
-Step 7: DHCP Relay on Router 2  
+-Router 1 acts as Active
 
-Since only Router 1 runs DHCP, I configured Router 2 as a DHCP relay agent. This allows devices behind Router 2 to send DHCP requests to Router 1 and still receive valid IP configurations. 
+-Router 2 acts as Standby
+
+If Router 1 fails, Router 2 takes over instantly, ensuring no interruption for connected devices.
+
+6. Centralized DHCP Server Configuration
+
+Router 1 was configured as the DHCP server for both VLANs.
+Each DHCP pool included:
+
+Subnet and mask
+
+HSRP virtual IP as default gateway
+
+DNS server assignment
+
+This created a centralized and automated addressing system for all network devices.
+
+7. DHCP Relay on Router 2
+
+Router 2 does not host DHCP services, so I configured it as a relay.
+
+Forwards DHCP broadcasts to Router 1
+
+Ensures devices behind Router 2 receive valid IP configurations
+
+This models how enterprise networks use relay agents to centralize DHCP operations.
+
+Skills Demonstrated
+
+-VLAN design and segmentation
+-Cisco switch configuration and trunking
+-EtherChannel aggregation for redundancy and performance
+-Inter-VLAN routing using router-on-a-stick
+-High availability gateway setup using HSRP
+-DHCP server and DHCP relay implementation
+-Troubleshooting routing, switching, and VLAN communication
+
+Understanding of enterprise LAN design principles
 ![NETWORK DESIGN](https://github.com/user-attachments/assets/73b5c549-4431-439c-b07a-1e1bca515381)
 ![Jean in Vlan 20 can communicate with Cyr in Vlan 10](https://github.com/user-attachments/assets/f37c2e0a-2e1a-40e7-b1bb-7f27ca56c649)
 ![Dom in Vlan 10 can communicate with Sarah in Vlan 20](https://github.com/user-attachments/assets/30ba169d-32a3-4838-a9ca-ec1792295534)
