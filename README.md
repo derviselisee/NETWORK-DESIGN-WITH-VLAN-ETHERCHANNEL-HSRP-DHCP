@@ -1,4 +1,4 @@
-Enterprise Network Design with VLANs, EtherChannel, HSRP, and Centralized DHCP
+# Enterprise Network Design with VLANs, EtherChannel, HSRP, and Centralized DHCP
 
 This project involves designing and deploying a resilient enterprise LAN using Cisco routers and switches.
 The goal was to build a segmented, scalable, and highly available network using VLANs, EtherChannel, redundant gateway protocols (HSRP), and centralized DHCP services with relay support.
